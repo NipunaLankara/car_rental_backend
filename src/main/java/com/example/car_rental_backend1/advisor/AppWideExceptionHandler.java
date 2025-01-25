@@ -19,7 +19,7 @@ public class AppWideExceptionHandler {
                 new StandardResponse(409,"Error",exception.getMessage()),HttpStatus.CONFLICT
         );
     }
-
+//ADDED
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<StandardResponse> handleBadCredentialsException (BadCredentialsException exception){
         return new ResponseEntity<StandardResponse>(
