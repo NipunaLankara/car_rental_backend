@@ -78,6 +78,19 @@ public class UserServiceIMPL implements UserService {
         }
     }
 
+    @Override
+    public String deleteCustomer(int id) {
+
+        if (userRepo.existsById(id)) {
+            userRepo.deleteById(id);
+
+            return "User Id = "+id+" User Deleted Successfully";
+
+        } else {
+            throw new NotContentException("There is no values for User Id = "+id);
+        }
+    }
+
     public boolean validateRegisterDetails(UserSaveDTO userSaveDTO) {
         String firstName = userSaveDTO.getFirstName();
         String lastName = userSaveDTO.getLastName();

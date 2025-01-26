@@ -45,6 +45,21 @@ public class AdminController {
 
     }
 
+    @DeleteMapping(
+            path = "/delete-customer",
+            params = "id"
+    )
+    public ResponseEntity<StandardResponse> deleteCustomer(@RequestParam(value = "id") int id) {
+        String message = userService.deleteCustomer(id);
+
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "User Deleted", message),
+                        HttpStatus.CREATED
+        );
+    }
+
+
+
 
     //     Controllers For Car  ...............................................................
 
