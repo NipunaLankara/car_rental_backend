@@ -1,13 +1,18 @@
 package com.example.car_rental_backend1.service.impl;
 
 import com.example.car_rental_backend1.dto.request.UserSaveDTO;
+import com.example.car_rental_backend1.dto.response.UserResponseDTO;
 import com.example.car_rental_backend1.entity.User;
 import com.example.car_rental_backend1.exception.AlreadyExistsException;
+import com.example.car_rental_backend1.exception.NotContentException;
 import com.example.car_rental_backend1.repo.UserRepo;
 import com.example.car_rental_backend1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceIMPL implements UserService {
@@ -16,11 +21,12 @@ public class UserServiceIMPL implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     @Override
-    public String registerNewUser(UserSaveDTO userSaveDTO)  {
+    public String registerNewUser(UserSaveDTO userSaveDTO) {
 
         if (validateRegisterDetails(userSaveDTO)) {
-            if (!userRepo.existsByEmail(userSaveDTO.getEmail())){
+            if (!userRepo.existsByEmail(userSaveDTO.getEmail())) {
                 User user = new User(
                         userSaveDTO.getFirstName(),
                         userSaveDTO.getLastName(),
@@ -36,10 +42,39 @@ public class UserServiceIMPL implements UserService {
 
             } else {
 
-                throw new AlreadyExistsException ("This Email Already Exists");
+                throw new AlreadyExistsException("This Email Already Exists");
             }
         } else {
             throw new IllegalArgumentException("Something  Wrong");
+        }
+    }
+
+    @Override
+    public List<UserResponseDTO> getAllCustomers() {
+        String userRole = "USER";
+        List<User> userList = userRepo.findAllByUserRoleEquals(userRole);
+
+        if (!userList.isEmpty()) {
+
+            List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
+
+            for (User user : userList) {
+
+                UserResponseDTO userResponseDTO = new UserResponseDTO(
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getAddress(),
+                        user.getEmail(),
+                        user.getPhoneNumber(),
+                        user.getNic(),
+                        user.getPassword()
+                );
+                userResponseDTOList.add(userResponseDTO);
+            }
+            return userResponseDTOList;
+
+        } else {
+            throw new NotContentException("No Customers");
         }
     }
 
@@ -58,33 +93,19 @@ public class UserServiceIMPL implements UserService {
 
         if (firstName == null || firstName.isEmpty()) {
             exceptionError = "First name cannot be empty.";
-        }
-
-        else if (lastName == null || lastName.isEmpty()) {
+        } else if (lastName == null || lastName.isEmpty()) {
             exceptionError = "Last name cannot be empty.";
-        }
-
-        else if (address == null || address.isEmpty()) {
+        } else if (address == null || address.isEmpty()) {
             exceptionError = "Address cannot be empty.";
-        }
-
-        else if (email == null || email.isEmpty() ) {
+        } else if (email == null || email.isEmpty()) {
             exceptionError = "Invalid email format.";
-        }
-
-        else if (phoneNumber.length() != 10) {
+        } else if (phoneNumber.length() != 10) {
             exceptionError = "Phone number must be 10 digits.";
-        }
-
-        else if (nic == null || nic.isEmpty() ) {
+        } else if (nic == null || nic.isEmpty()) {
             exceptionError = "Invalid NIC format.";
-        }
-
-        else if (password == null  || password.length() < 5) {
+        } else if (password == null || password.length() < 5) {
             exceptionError = "Password must be at least 5 characters long.";
-        }
-
-        else if (userRole == null || userRole.isEmpty() ||
+        } else if (userRole == null || userRole.isEmpty() ||
                 (!userRole.equalsIgnoreCase("ADMIN") && !userRole.equalsIgnoreCase("USER"))) {
             exceptionError = "User role must be either 'ADMIN' or 'USER'.";
         }
@@ -95,7 +116,7 @@ public class UserServiceIMPL implements UserService {
         return true;
     }
 
-    private String getEncodedPassword(String password){
+    private String getEncodedPassword(String password) {
         return passwordEncoder.encode(password);
     }
 }
