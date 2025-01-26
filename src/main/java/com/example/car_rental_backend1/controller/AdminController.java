@@ -2,7 +2,9 @@ package com.example.car_rental_backend1.controller;
 
 import com.example.car_rental_backend1.dto.request.CarRequestDTO;
 import com.example.car_rental_backend1.dto.response.CarResponseDTO;
+import com.example.car_rental_backend1.dto.response.UserResponseDTO;
 import com.example.car_rental_backend1.service.CarService;
+import com.example.car_rental_backend1.service.UserService;
 import com.example.car_rental_backend1.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import java.util.List;
 public class AdminController {
     @Autowired
     private CarService carService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/home-page")
 //    @PreAuthorize("hasRole('ADMIN')")
@@ -26,10 +30,18 @@ public class AdminController {
         return "this url Admin only";
     }
 
-    // Controllers For Customer........................................................
+//     Controllers For Customer........................................................
 
     @GetMapping("/get-all-customers")
     public  ResponseEntity<StandardResponse> getAllCustomers(){
+      List<UserResponseDTO> userResponseDTOList =  userService.getAllCustomers();
+
+        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Customer List", userResponseDTOList),
+                HttpStatus.OK
+        );
+        return response;
+        
 
     }
 
