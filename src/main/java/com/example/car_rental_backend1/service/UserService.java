@@ -9,4 +9,6 @@ public interface UserService {
     String registerNewUser(UserSaveDTO userSaveDTO) throws Exception;
 
     List<UserResponseDTO> getAllCustomers();
+
+    String deleteCustomer(int id);
 }
