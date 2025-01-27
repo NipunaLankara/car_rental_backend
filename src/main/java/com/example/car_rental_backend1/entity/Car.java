@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -32,10 +33,15 @@ public class Car {
     @Column(name = "status",length = 250,nullable = false)
     private String status;
 
+    @OneToOne(mappedBy="carId")
+    private Driver driver;
+
     public Car(String carNumber, String model, String type, String status) {
         this.carNumber = carNumber;
         this.model = model;
         this.type = type;
         this.status = status;
     }
+
+
 }

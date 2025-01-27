@@ -30,36 +30,6 @@ public class AdminController {
         return "this url Admin only";
     }
 
-//     Controllers For Customer........................................................
-
-    @GetMapping("/get-all-customers")
-    public  ResponseEntity<StandardResponse> getAllCustomers(){
-      List<UserResponseDTO> userResponseDTOList =  userService.getAllCustomers();
-
-        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, "Customer List", userResponseDTOList),
-                HttpStatus.OK
-        );
-        return response;
-        
-
-    }
-
-    @DeleteMapping(
-            path = "/delete-customer",
-            params = "id"
-    )
-    public ResponseEntity<StandardResponse> deleteCustomer(@RequestParam(value = "id") int id) {
-        String message = userService.deleteCustomer(id);
-
-        return new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, "User Deleted", message),
-                        HttpStatus.CREATED
-        );
-    }
-
-
-
 
     //     Controllers For Car  ...............................................................
 
@@ -119,17 +89,43 @@ public class AdminController {
             path = "/delete-car-by-id",
             params = "id"
     )
-    public ResponseEntity<StandardResponse> deleteCarById (@RequestParam(value = "id") int id) {
-       String message =  carService.deleteCarById(id);
+    public ResponseEntity<StandardResponse> deleteCarById(@RequestParam(value = "id") int id) {
+        String message = carService.deleteCarById(id);
 
-       return new ResponseEntity<StandardResponse>(
-               new StandardResponse(200,"Deleted",message),
-               HttpStatus.OK
-       );
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Deleted", message),
+                HttpStatus.OK
+        );
 
     }
 
+    //     Controllers For Customer........................................................
 
+    @GetMapping("/get-all-customers")
+    public ResponseEntity<StandardResponse> getAllCustomers() {
+        List<UserResponseDTO> userResponseDTOList = userService.getAllCustomers();
+
+        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Customer List", userResponseDTOList),
+                HttpStatus.OK
+        );
+        return response;
+
+
+    }
+
+    @DeleteMapping(
+            path = "/delete-customer",
+            params = "id"
+    )
+    public ResponseEntity<StandardResponse> deleteCustomer(@RequestParam(value = "id") int id) {
+        String message = userService.deleteCustomer(id);
+
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "User Deleted", message),
+                HttpStatus.CREATED
+        );
+    }
 
 
 
