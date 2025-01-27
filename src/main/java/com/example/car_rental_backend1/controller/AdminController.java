@@ -33,99 +33,99 @@ public class AdminController {
 
     //     Controllers For Car  ...............................................................
 
-    @PostMapping("/add-new-car")
-//    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<StandardResponse> addNewCar(@RequestBody CarRequestDTO carRequestDTO) {
-        String message = carService.addNewCar(carRequestDTO);
-
-        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
-                new StandardResponse(201, "Car Saved", message),
-                HttpStatus.CREATED
-        );
-        return response;
-    }
-
-    @GetMapping("/get-all-cars")
-    public ResponseEntity<StandardResponse> getAllCars() {
-        List<CarResponseDTO> carsResponseDDTOList = carService.getAllCars();
-
-        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, "All Car List", carsResponseDDTOList),
-                HttpStatus.OK
-        );
-        return response;
-
-    }
-
-    @GetMapping(
-            path = "/get-car-by-status",
-            params = "status"
-    )
-    public ResponseEntity<StandardResponse> getCarByStatus(@RequestParam(value = "status") String status) {
-        List<CarResponseDTO> carResponseDTOList = carService.getAllCarsByStatus(status);
-
-        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, "All Car List Get By Status", carResponseDTOList),
-                HttpStatus.OK
-        );
-        return response;
-    }
-
-
-    @PutMapping(
-            path = "/update-car"
-    )
-    public ResponseEntity<StandardResponse> updateCar(@RequestBody CarRequestDTO carRequestDTO) {
-        String message = carService.updateCar(carRequestDTO);
-
-        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, "Updated", message),
-                HttpStatus.OK
-        );
-        return response;
-    }
-
-    @DeleteMapping(
-            path = "/delete-car-by-id",
-            params = "id"
-    )
-    public ResponseEntity<StandardResponse> deleteCarById(@RequestParam(value = "id") int id) {
-        String message = carService.deleteCarById(id);
-
-        return new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, "Deleted", message),
-                HttpStatus.OK
-        );
-
-    }
+//    @PostMapping("/add-new-car")
+////    @PreAuthorize("hasRole('ADMIN')")
+//    public ResponseEntity<StandardResponse> addNewCar(@RequestBody CarRequestDTO carRequestDTO) {
+//        String message = carService.addNewCar(carRequestDTO);
+//
+//        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+//                new StandardResponse(201, "Car Saved", message),
+//                HttpStatus.CREATED
+//        );
+//        return response;
+//    }
+//
+//    @GetMapping("/get-all-cars")
+//    public ResponseEntity<StandardResponse> getAllCars() {
+//        List<CarResponseDTO> carsResponseDDTOList = carService.getAllCars();
+//
+//        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+//                new StandardResponse(200, "All Car List", carsResponseDDTOList),
+//                HttpStatus.OK
+//        );
+//        return response;
+//
+//    }
+//
+//    @GetMapping(
+//            path = "/get-car-by-status",
+//            params = "status"
+//    )
+//    public ResponseEntity<StandardResponse> getCarByStatus(@RequestParam(value = "status") String status) {
+//        List<CarResponseDTO> carResponseDTOList = carService.getAllCarsByStatus(status);
+//
+//        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+//                new StandardResponse(200, "All Car List Get By Status", carResponseDTOList),
+//                HttpStatus.OK
+//        );
+//        return response;
+//    }
+//
+//
+//    @PutMapping(
+//            path = "/update-car"
+//    )
+//    public ResponseEntity<StandardResponse> updateCar(@RequestBody CarRequestDTO carRequestDTO) {
+//        String message = carService.updateCar(carRequestDTO);
+//
+//        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+//                new StandardResponse(200, "Updated", message),
+//                HttpStatus.OK
+//        );
+//        return response;
+//    }
+//
+//    @DeleteMapping(
+//            path = "/delete-car-by-id",
+//            params = "id"
+//    )
+//    public ResponseEntity<StandardResponse> deleteCarById(@RequestParam(value = "id") int id) {
+//        String message = carService.deleteCarById(id);
+//
+//        return new ResponseEntity<StandardResponse>(
+//                new StandardResponse(200, "Deleted", message),
+//                HttpStatus.OK
+//        );
+//
+//    }
 
     //     Controllers For Customer........................................................
 
-    @GetMapping("/get-all-customers")
-    public ResponseEntity<StandardResponse> getAllCustomers() {
-        List<UserResponseDTO> userResponseDTOList = userService.getAllCustomers();
-
-        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, "Customer List", userResponseDTOList),
-                HttpStatus.OK
-        );
-        return response;
-
-
-    }
-
-    @DeleteMapping(
-            path = "/delete-customer",
-            params = "id"
-    )
-    public ResponseEntity<StandardResponse> deleteCustomer(@RequestParam(value = "id") int id) {
-        String message = userService.deleteCustomer(id);
-
-        return new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, "User Deleted", message),
-                HttpStatus.CREATED
-        );
-    }
+//    @GetMapping("/get-all-customers")
+//    public ResponseEntity<StandardResponse> getAllCustomers() {
+//        List<UserResponseDTO> userResponseDTOList = userService.getAllCustomers();
+//
+//        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+//                new StandardResponse(200, "Customer List", userResponseDTOList),
+//                HttpStatus.OK
+//        );
+//        return response;
+//
+//
+//    }
+//
+//    @DeleteMapping(
+//            path = "/delete-customer",
+//            params = "id"
+//    )
+//    public ResponseEntity<StandardResponse> deleteCustomer(@RequestParam(value = "id") int id) {
+//        String message = userService.deleteCustomer(id);
+//
+//        return new ResponseEntity<StandardResponse>(
+//                new StandardResponse(200, "User Deleted", message),
+//                HttpStatus.CREATED
+//        );
+//    }
 
 
 

@@ -10,7 +10,6 @@ import javax.persistence.NamedEntityGraph;
 @Data
 public class CarResponseDTO {
 
-    private int id;
     private String carNumber;
     private String model;
     private String type;

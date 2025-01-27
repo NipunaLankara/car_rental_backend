@@ -14,4 +14,9 @@ public interface CarRepo extends JpaRepository<Car,Integer> {
     boolean existsByCarNumber(String carNumber);
 
     List<Car> findAllByStatusEquals(String status);
+
+    Car getReferenceByCarNumber(String carNumber);
+
+
+    void deleteByCarNumber(String carNumber);
 }

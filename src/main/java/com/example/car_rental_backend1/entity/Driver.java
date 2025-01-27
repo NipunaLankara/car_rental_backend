@@ -31,8 +31,8 @@ public class Driver {
     private String phoneNumber;
 
     @OneToOne
-    @JoinColumn(name="car_id", nullable=false)
-    private Car carId;
+    @JoinColumn(name="car_number", nullable=false)
+    private Car carNumber;
 
 
 

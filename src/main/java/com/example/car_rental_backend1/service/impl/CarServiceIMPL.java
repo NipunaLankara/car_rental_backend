@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,6 @@ public class CarServiceIMPL implements CarService {
 
         for (Car car : carList) {
             CarResponseDTO carResponseDTO = new CarResponseDTO(
-                    car.getId(),
                     car.getCarNumber(),
                     car.getModel(),
                     car.getType(),
@@ -61,43 +61,51 @@ public class CarServiceIMPL implements CarService {
 
     @Override
     public List<CarResponseDTO> getAllCarsByStatus(String status) {
-        List<Car> carList = carRepo.findAllByStatusEquals(status);
 
-        if (!carList.isEmpty()) {
-            List<CarResponseDTO> carResponseDTOList = new ArrayList<>();
+        if (status.equalsIgnoreCase("Available") || status.equalsIgnoreCase("Booked")
+                || status.equalsIgnoreCase("Repair")) {
+            List<Car> carList = carRepo.findAllByStatusEquals(status);
 
-            for (Car car : carList) {
-                CarResponseDTO carResponseDTO = new CarResponseDTO(
-                        car.getId(),
-                        car.getCarNumber(),
-                        car.getModel(),
-                        car.getType(),
-                        car.getStatus()
-                );
-                carResponseDTOList.add(carResponseDTO);
-            }
+            if (!carList.isEmpty()) {
+                List<CarResponseDTO> carResponseDTOList = new ArrayList<>();
+
+                for (Car car : carList) {
+                    CarResponseDTO carResponseDTO = new CarResponseDTO(
+                            car.getCarNumber(),
+                            car.getModel(),
+                            car.getType(),
+                            car.getStatus()
+                    );
+                    carResponseDTOList.add(carResponseDTO);
+                }
 
 
 //            List<CarResponseDTO> carResponseDTOList  = modelMapper.map(carList, new TypeToken<List<CarResponseDTO>>() {
 //            }.getType());
 
-            return carResponseDTOList;
+                return carResponseDTOList;
 
+
+            } else {
+                throw new NotContentException("Car List Empty");
+            }
 
         } else {
-            throw new NotContentException("Car List Empty");
+            throw new IllegalArgumentException("Status must be one of the following: Available, Booked, Repair");
         }
+
+
     }
 
     @Override
     public String updateCar(CarRequestDTO carRequestDTO) {
-        int carId = carRequestDTO.getCarId();
+        String carNumber = carRequestDTO.getCarNumber();
 
-        System.out.println(carId);
+        System.out.println(carNumber);
 
-        if (carRepo.existsById(carId)) {
+        if (carRepo.existsByCarNumber(carNumber)) {
 
-            Car updateCar = carRepo.getReferenceById(carId);
+            Car updateCar = carRepo.getReferenceByCarNumber(carNumber);
             updateCar.setCarNumber(carRequestDTO.getCarNumber());
             updateCar.setModel(carRequestDTO.getModel());
             updateCar.setType(carRequestDTO.getType());
@@ -105,23 +113,24 @@ public class CarServiceIMPL implements CarService {
 
             carRepo.save(updateCar);
 
-            return "Car Id " + carId + " Update Successfully";
+            return "Car Number " + carNumber + " Update Successfully";
 
 
         } else {
-            throw new NotContentException("No Car Details for car id = " + carId);
+            throw new NotContentException("No Car Details for car number = " + carNumber);
         }
     }
 
+    @Transactional
     @Override
-    public String deleteCarById(int id) {
+    public String deleteCarByCarNumber(String carNumber) {
 
-        if (carRepo.existsById(id)) {
-            carRepo.deleteById(id);
-            return "Car Id = " + id+ " Car Deleted Successfully";
+        if (carRepo.existsByCarNumber(carNumber)) {
+            carRepo.deleteByCarNumber(carNumber);
+            return "Car Number = " + carNumber+ " is Car Deleted Successfully";
 
         } else {
-            throw new NotContentException("No Car Details Found");
+            throw new NotContentException("No Car Details Found for Car Number = "+carNumber);
         }
     }
 
