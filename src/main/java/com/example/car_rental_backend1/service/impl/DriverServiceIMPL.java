@@ -43,7 +43,7 @@ public class DriverServiceIMPL implements DriverService {
         String address = driverRequestDTO.getAddress();
         String licenseNumber = driverRequestDTO.getLicenseNumber();
         String phoneNumber = driverRequestDTO.getPhoneNumber();
-        int carId = driverRequestDTO.getCarId();
+        String carNumber = driverRequestDTO.getCarNumber();
 
 //        String errorMessage = null;
 
@@ -51,8 +51,8 @@ public class DriverServiceIMPL implements DriverService {
 
             throw new IllegalArgumentException("Values Can not be Empty");
 
-        } if (carId <= 0) {
-            throw new IllegalArgumentException("Car Id Can not be 0");
+        } if (carNumber.isEmpty()) {
+            throw new IllegalArgumentException("Car Id Can not be Empty");
 
         } else {
             return true;

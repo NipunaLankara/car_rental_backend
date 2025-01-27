@@ -15,5 +15,5 @@ public interface CarService {
 
     String updateCar(CarRequestDTO carRequestDTO);
 
-    String deleteCarById(int id);
+    String deleteCarByCarNumber(String carNumber);
 }

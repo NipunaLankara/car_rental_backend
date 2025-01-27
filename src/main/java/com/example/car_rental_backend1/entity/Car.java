@@ -16,11 +16,12 @@ import java.util.Set;
 
 public class Car {
 
-    @Id
-    @Column(name = "car_id",length = 255,nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+//    @Id
+//    @Column(name = "car_id",length = 255,nullable = false)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private int id;
 
+    @Id
     @Column(name = "car_number",length = 280,nullable = false, unique = true)
     private String carNumber;
 
@@ -33,7 +34,7 @@ public class Car {
     @Column(name = "status",length = 250,nullable = false)
     private String status;
 
-    @OneToOne(mappedBy="carId")
+    @OneToOne(mappedBy="carNumber")
     private Driver driver;
 
     public Car(String carNumber, String model, String type, String status) {
