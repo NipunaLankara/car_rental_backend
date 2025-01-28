@@ -50,7 +50,8 @@ public class CarServiceIMPL implements CarService {
                     car.getCarNumber(),
                     car.getModel(),
                     car.getType(),
-                    car.getStatus()
+                    car.getStatus(),
+                    car.getAmount()
             );
 
             carResponseDTOList.add(carResponseDTO);
@@ -74,7 +75,8 @@ public class CarServiceIMPL implements CarService {
                             car.getCarNumber(),
                             car.getModel(),
                             car.getType(),
-                            car.getStatus()
+                            car.getStatus(),
+                            car.getAmount()
                     );
                     carResponseDTOList.add(carResponseDTO);
                 }
@@ -110,6 +112,7 @@ public class CarServiceIMPL implements CarService {
             updateCar.setModel(carRequestDTO.getModel());
             updateCar.setType(carRequestDTO.getType());
             updateCar.setStatus(carRequestDTO.getStatus());
+            updateCar.setAmount(carRequestDTO.getAmount());
 
             carRepo.save(updateCar);
 
@@ -140,6 +143,7 @@ public class CarServiceIMPL implements CarService {
         String model = carRequestDTO.getModel();
         String type = carRequestDTO.getType();
         String status = carRequestDTO.getStatus();
+        String amount = carRequestDTO.getAmount();
 
         String exceptionError = null;
 
@@ -153,6 +157,8 @@ public class CarServiceIMPL implements CarService {
                 !status.equalsIgnoreCase("Booked") &&
                 !status.equalsIgnoreCase("Repair")) {
             exceptionError = "Status must be one of the following: Available, Booked, Repair.";
+        } else if (amount == null || amount.isEmpty()) {
+            exceptionError = "Amount cannot be empty.";
         }
 
         if (exceptionError != null) {

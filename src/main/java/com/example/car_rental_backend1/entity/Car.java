@@ -34,6 +34,9 @@ public class Car {
     @Column(name = "status",length = 250,nullable = false)
     private String status;
 
+    @Column(name = "amount_per_1km",length = 250,nullable = false)
+    private String amount;
+
     @OneToOne(mappedBy="carNumber")
     private Driver driver;
 
