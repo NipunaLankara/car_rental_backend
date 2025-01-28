@@ -15,6 +15,7 @@ public class CarRequestDTO {
     private String model;
     private String type;
     private String status;
+    private String amount;
 
 
 }

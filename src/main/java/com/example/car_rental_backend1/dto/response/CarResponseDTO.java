@@ -14,4 +14,5 @@ public class CarResponseDTO {
     private String model;
     private String type;
     private String status;
+    private String amount;
 }
