@@ -17,6 +17,7 @@ public class Bookings {
 
     @Id
     @Column(name = "booking_id",length = 280,nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(name = "booking_status",length = 280,nullable = false)
@@ -45,6 +46,9 @@ public class Bookings {
     @ManyToOne
     @JoinColumn(name = "package_id", nullable = false)
     private CarPackage carPackage;
+
+    @OneToOne(mappedBy="bookingId")
+    private Bill bill;
 
 
 
