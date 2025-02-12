@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -42,6 +43,9 @@ public class User {
 
     @Column(name = "user_role",length = 150,nullable = false)
     private String userRole;
+
+    @OneToMany(mappedBy="user")
+    private Set<Bookings> bookings;
 
     public User(String firstName, String lastName, String address, String email, String phoneNumber, String nic, String password, String userRole) {
         this.firstName = firstName;

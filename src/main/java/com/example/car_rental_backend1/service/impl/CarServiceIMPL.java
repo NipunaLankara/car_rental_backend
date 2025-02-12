@@ -2,7 +2,9 @@ package com.example.car_rental_backend1.service.impl;
 
 import com.example.car_rental_backend1.dto.request.CarRequestDTO;
 import com.example.car_rental_backend1.dto.response.CarResponseDTO;
-import com.example.car_rental_backend1.entity.Car;
+
+import com.example.car_rental_backend1.entity.CarNew;
+import com.example.car_rental_backend1.entity.CarType;
 import com.example.car_rental_backend1.exception.AlreadyExistsException;
 import com.example.car_rental_backend1.exception.NotContentException;
 import com.example.car_rental_backend1.repo.CarRepo;
@@ -22,13 +24,14 @@ public class CarServiceIMPL implements CarService {
     @Autowired
     private ModelMapper modelMapper;
 
+
     @Override
     public String addNewCar(CarRequestDTO carRequestDTO) {
 
         if (validateCarDetails(carRequestDTO)) {
 
             if (!carRepo.existsByCarNumber(carRequestDTO.getCarNumber())) {
-                Car car = modelMapper.map(carRequestDTO, Car.class);
+                CarNew car = modelMapper.map(carRequestDTO, CarNew.class);
                 carRepo.save(car);
                 return "Car Number " + carRequestDTO.getCarNumber() + " Added Successfully";
             } else {
@@ -39,23 +42,24 @@ public class CarServiceIMPL implements CarService {
         }
     }
 
+
+
     @Override
     public List<CarResponseDTO> getAllCars() {
-        List<Car> carList = carRepo.findAll();
+        List<CarNew> carList = carRepo.findAll();
 
-        List<CarResponseDTO> carResponseDTOList = new ArrayList<>();
+        List<CarResponseDTO> carResponseDTOList = new ArrayList<CarResponseDTO>();
 
-        for (Car car : carList) {
+        for (CarNew car : carList) {
             CarResponseDTO carResponseDTO = new CarResponseDTO(
                     car.getCarNumber(),
                     car.getModel(),
-                    car.getType(),
                     car.getStatus(),
-                    car.getAmount()
+                    car.getCarType().getId()
             );
-
             carResponseDTOList.add(carResponseDTO);
         }
+
         return carResponseDTOList;
 
     }
@@ -65,18 +69,18 @@ public class CarServiceIMPL implements CarService {
 
         if (status.equalsIgnoreCase("Available") || status.equalsIgnoreCase("Booked")
                 || status.equalsIgnoreCase("Repair")) {
-            List<Car> carList = carRepo.findAllByStatusEquals(status);
+
+            List<CarNew> carList = carRepo.findAllByStatusEquals(status);
 
             if (!carList.isEmpty()) {
                 List<CarResponseDTO> carResponseDTOList = new ArrayList<>();
 
-                for (Car car : carList) {
+                for (CarNew car : carList) {
                     CarResponseDTO carResponseDTO = new CarResponseDTO(
                             car.getCarNumber(),
                             car.getModel(),
-                            car.getType(),
                             car.getStatus(),
-                            car.getAmount()
+                            car.getCarType().getId()
                     );
                     carResponseDTOList.add(carResponseDTO);
                 }
@@ -107,12 +111,10 @@ public class CarServiceIMPL implements CarService {
 
         if (carRepo.existsByCarNumber(carNumber)) {
 
-            Car updateCar = carRepo.getReferenceByCarNumber(carNumber);
+            CarNew updateCar = carRepo.getReferenceByCarNumber(carNumber);
             updateCar.setCarNumber(carRequestDTO.getCarNumber());
             updateCar.setModel(carRequestDTO.getModel());
-            updateCar.setType(carRequestDTO.getType());
             updateCar.setStatus(carRequestDTO.getStatus());
-            updateCar.setAmount(carRequestDTO.getAmount());
 
             carRepo.save(updateCar);
 
@@ -123,6 +125,11 @@ public class CarServiceIMPL implements CarService {
             throw new NotContentException("No Car Details for car number = " + carNumber);
         }
     }
+
+
+
+
+
 
     @Transactional
     @Override
@@ -141,9 +148,7 @@ public class CarServiceIMPL implements CarService {
     public boolean validateCarDetails(CarRequestDTO carRequestDTO) {
         String carNumber = carRequestDTO.getCarNumber();
         String model = carRequestDTO.getModel();
-        String type = carRequestDTO.getType();
         String status = carRequestDTO.getStatus();
-        String amount = carRequestDTO.getAmount();
 
         String exceptionError = null;
 
@@ -151,14 +156,10 @@ public class CarServiceIMPL implements CarService {
             exceptionError = "Car Number cannot be empty.";
         } else if (model == null || model.isEmpty()) {
             exceptionError = "Model cannot be empty.";
-        } else if (type == null || type.isEmpty()) {
-            exceptionError = "Type cannot be empty.";
         } else if (!status.equalsIgnoreCase("Available") &&
                 !status.equalsIgnoreCase("Booked") &&
                 !status.equalsIgnoreCase("Repair")) {
             exceptionError = "Status must be one of the following: Available, Booked, Repair.";
-        } else if (amount == null || amount.isEmpty()) {
-            exceptionError = "Amount cannot be empty.";
         }
 
         if (exceptionError != null) {

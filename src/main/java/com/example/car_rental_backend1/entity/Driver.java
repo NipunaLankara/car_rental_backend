@@ -30,10 +30,12 @@ public class Driver {
     @Column(name = "phone_number",length = 10,nullable = false)
     private String phoneNumber;
 
+//    @OneToOne
+//    @JoinColumn(name="car_number", nullable=false)
+//    private Car carNumber;
+
     @OneToOne
     @JoinColumn(name="car_number", nullable=false)
-    private Car carNumber;
-
-
+    private CarNew carNumber;
 
 }

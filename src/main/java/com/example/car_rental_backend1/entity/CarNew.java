@@ -12,14 +12,9 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 
-@Table(name = "car")
+@Table(name = "car_new")
 
-public class Car {
-
-//    @Id
-//    @Column(name = "car_id",length = 255,nullable = false)
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    private int id;
+public class CarNew {
 
     @Id
     @Column(name = "car_number",length = 280,nullable = false, unique = true)
@@ -28,24 +23,19 @@ public class Car {
     @Column(name = "model",length = 280,nullable = false)
     private String model;
 
-    @Column(name = "type",length = 250,nullable = false)
-    private String type;
-
     @Column(name = "status",length = 250,nullable = false)
     private String status;
 
-    @Column(name = "amount_per_1km",length = 250,nullable = false)
-    private String amount;
+    @ManyToOne
+    @JoinColumn(name="type_id", nullable=false)
+    private CarType carType;
 
     @OneToOne(mappedBy="carNumber")
     private Driver driver;
 
-    public Car(String carNumber, String model, String type, String status) {
-        this.carNumber = carNumber;
-        this.model = model;
-        this.type = type;
-        this.status = status;
-    }
+    @OneToMany(mappedBy = "carNumber")
+    private Set<Bookings> bookings;
+
 
 
 }
