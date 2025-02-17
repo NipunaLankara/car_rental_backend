@@ -15,6 +15,7 @@ import javax.persistence.*;
 public class Bill {
     @Id
     @Column(name = "bill_id", length = 280, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(name = "package_price", length = 280, nullable = false)
@@ -26,11 +27,20 @@ public class Bill {
     @Column(name = "addtional_charge_perDay", length = 280, nullable = true)
     private double addtionalChargePerDay;
 
+    @Column(name = "deposit", length = 280, nullable = false)
+    private double deposit;
+
     @Column(name = "discount", length = 280, nullable = false)
     private double discount;
 
     @Column(name = "total_price", length = 280, nullable = false)
     private double total;
+
+    @Column(name = "prepayment", length = 280, nullable = false)
+    private double prepayment;
+
+    @Column(name = "balance", length = 280, nullable = false)
+    private double balance;
 
     @OneToOne
     @JoinColumn(name="booking_id", nullable=false)

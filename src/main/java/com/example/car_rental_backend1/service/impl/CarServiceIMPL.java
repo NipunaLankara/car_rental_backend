@@ -1,5 +1,6 @@
 package com.example.car_rental_backend1.service.impl;
 
+import com.example.car_rental_backend1.dto.paginate.PaginateCarResponseDTO;
 import com.example.car_rental_backend1.dto.request.CarRequestDTO;
 import com.example.car_rental_backend1.dto.response.CarResponseDTO;
 
@@ -9,8 +10,12 @@ import com.example.car_rental_backend1.exception.AlreadyExistsException;
 import com.example.car_rental_backend1.exception.NotContentException;
 import com.example.car_rental_backend1.repo.CarRepo;
 import com.example.car_rental_backend1.service.CarService;
+import com.example.car_rental_backend1.util.mappers.CarMapper;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,6 +28,8 @@ public class CarServiceIMPL implements CarService {
     private CarRepo carRepo;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private CarMapper carMapper;
 
 
     @Override
@@ -99,9 +106,36 @@ public class CarServiceIMPL implements CarService {
         } else {
             throw new IllegalArgumentException("Status must be one of the following: Available, Booked, Repair");
         }
-
-
     }
+
+    @Override
+    public PaginateCarResponseDTO getAllCarsWithPaginate(int page, int size) {
+        Page<CarNew> carPage = carRepo.findAll(PageRequest.of(page, size));
+
+        if (carPage.hasContent()) {
+            long count = carRepo.count();
+
+//            List<CarResponseDTO> carResponseDTOList = new ArrayList<>();
+//
+//            for (CarNew car : carPage.getContent()) {  // Using for-each
+//                CarResponseDTO carResponseDTO = new CarResponseDTO(
+//                        car.getCarNumber(),
+//                        car.getModel(),
+//                        car.getStatus(),
+//                        car.getCarType().getId()
+//                );
+//                carResponseDTOList.add(carResponseDTO);
+//            }
+//            return new PaginateCarResponseDTO(carResponseDTOList,count);
+
+            List<CarResponseDTO> carResponseDTOs = carMapper.carListToDTOList(carPage.getContent());
+            return new PaginateCarResponseDTO(carResponseDTOs, count);
+
+        } else {
+            throw new NotContentException("Car List Empty");
+        }
+    }
+
 
     @Override
     public String updateCar(CarRequestDTO carRequestDTO) {
@@ -143,6 +177,8 @@ public class CarServiceIMPL implements CarService {
             throw new NotContentException("No Car Details Found for Car Number = "+carNumber);
         }
     }
+
+
 
 
     public boolean validateCarDetails(CarRequestDTO carRequestDTO) {

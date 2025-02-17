@@ -22,6 +22,9 @@ public class CarPackage {
     @Column(name = "package_duration", length = 280, nullable = false)
     private String packageDuration;
 
+    @Column(name = "distance_limit_km", length = 250, nullable = false)
+    private int distanceLimitKm;
+
     @Column(name = "price", length = 250, nullable = false)
     private int price;
 

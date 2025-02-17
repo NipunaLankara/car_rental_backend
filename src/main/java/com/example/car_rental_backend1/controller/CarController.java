@@ -1,5 +1,6 @@
 package com.example.car_rental_backend1.controller;
 
+import com.example.car_rental_backend1.dto.paginate.PaginateCarResponseDTO;
 import com.example.car_rental_backend1.dto.request.CarRequestDTO;
 import com.example.car_rental_backend1.dto.response.CarResponseDTO;
 import com.example.car_rental_backend1.service.CarService;
@@ -43,6 +44,27 @@ public class CarController {
         );
         return response;
 
+    }
+
+    // Get All Car Details Using Paginate
+    @GetMapping(
+            path = "/get-all-cars-paginate",
+            params = {"page","size"}
+
+    )
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<StandardResponse> getAllCarsWithPaginate(
+            @RequestParam (value = "page") int page,
+            @RequestParam (value = "size") int size
+    ) {
+
+        PaginateCarResponseDTO paginateCarResponseDTO = carService.getAllCarsWithPaginate(page,size);
+
+        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "All Car List", paginateCarResponseDTO),
+                HttpStatus.OK
+        );
+        return response;
     }
 
     @GetMapping(
@@ -90,6 +112,8 @@ public class CarController {
         );
 
     }
+
+
 
 
 }
