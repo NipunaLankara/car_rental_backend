@@ -1,5 +1,6 @@
 package com.example.car_rental_backend1.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,6 +46,7 @@ public class User {
     private String userRole;
 
     @OneToMany(mappedBy="user")
+    @JsonIgnore // Booking Details Fetch Error Fixed field ,prevented Hibernate from trying to fetch it during serialization, avoiding lazy-loading issues.
     private Set<Bookings> bookings;
 
     public User(String firstName, String lastName, String address, String email, String phoneNumber, String nic, String password, String userRole) {

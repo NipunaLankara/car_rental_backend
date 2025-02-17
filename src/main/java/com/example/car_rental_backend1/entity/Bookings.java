@@ -20,8 +20,11 @@ public class Bookings {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "booking_status",length = 280,nullable = false)
-    private String status;
+//    @Column(name = "booking_status",length = 280,nullable = false)
+//    private String status;
+
+    @Column(name = "booking_date",length = 280,nullable = true)
+    private Date bookingDate;
 
     @Column(name = "start_date",length = 280,nullable = true)
     private Date startDate;
