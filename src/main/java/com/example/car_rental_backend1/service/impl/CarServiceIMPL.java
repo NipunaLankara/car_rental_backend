@@ -136,6 +136,21 @@ public class CarServiceIMPL implements CarService {
         }
     }
 
+    @Override
+    public PaginateCarResponseDTO getCarByStatusWithPaginate(String status, int page) {
+        int size = 10;
+        Page<CarNew> carNewPage = carRepo.findAllByStatusEquals(status, PageRequest.of(page, size));
+
+        if (carNewPage.hasContent()) {
+            long count = carRepo.count();
+            List<CarResponseDTO> carResponseDTOs = carMapper.carListToDTOList(carNewPage.getContent());
+            return new PaginateCarResponseDTO(carResponseDTOs, count);
+
+        } else {
+            throw new NotContentException("Car List Empty");
+        }
+    }
+
 
     @Override
     public String updateCar(CarRequestDTO carRequestDTO) {

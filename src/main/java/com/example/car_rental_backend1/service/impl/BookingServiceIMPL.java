@@ -1,15 +1,21 @@
 package com.example.car_rental_backend1.service.impl;
 
+import com.example.car_rental_backend1.dto.paginate.PaginateBookingResponseDTO;
 import com.example.car_rental_backend1.dto.request.BookingRequestDTO;
-import com.example.car_rental_backend1.dto.request.CarRequestDTO;
+import com.example.car_rental_backend1.dto.response.BookingResponseDTO;
 import com.example.car_rental_backend1.entity.*;
+import com.example.car_rental_backend1.exception.NotContentException;
 import com.example.car_rental_backend1.repo.*;
 import com.example.car_rental_backend1.service.BookingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BookingServiceIMPL implements BookingService {
@@ -25,6 +31,8 @@ public class BookingServiceIMPL implements BookingService {
     private BillRepo billRepo;
     @Autowired
     private ModelMapper modelMapper;
+//    @Autowired
+//    private BookingMapper bookingMapper;
 
     @Transactional
     @Override
@@ -68,5 +76,37 @@ public class BookingServiceIMPL implements BookingService {
             throw new IllegalArgumentException("Invalid Values");
         }
 
+    }
+
+    @Override
+    public PaginateBookingResponseDTO getAllBookings(int page) {
+        Page<Bookings> bookings = bookingRepo.findAll(PageRequest.of(page,10));
+
+        if (bookings.hasContent()) {
+            long count = bookingRepo.count();
+
+//           List<BookingResponseDTO> bookingResponseDTOS = bookingMapper.bookingListToDTOList(bookings.getContent());
+
+            List<BookingResponseDTO> bookingResponseDTOList = new ArrayList<BookingResponseDTO>();
+            for (Bookings bookings1 :bookings.getContent()) {
+                BookingResponseDTO bookingResponseDTO = new BookingResponseDTO(
+                        bookings1.getId(),
+                        bookings1.getBookingDate(),
+                        bookings1.getStartDate(),
+                        bookings1.getReturnDate(),
+                        bookings1.getStartMillage(),
+                        bookings1.getEndMillage(),
+                        bookings1.getUser().getUserId(),
+                        bookings1.getCarNumber().getCarNumber(),
+                        bookings1.getCarPackage().getId()
+                );
+                bookingResponseDTOList.add(bookingResponseDTO);
+            }
+           return new PaginateBookingResponseDTO(bookingResponseDTOList,count);
+
+
+        } else {
+            throw new NotContentException("Booking List Empty");
+        }
     }
 }

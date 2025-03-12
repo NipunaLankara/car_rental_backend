@@ -1,5 +1,6 @@
 package com.example.car_rental_backend1.controller;
 
+import com.example.car_rental_backend1.dto.paginate.PaginateBookingResponseDTO;
 import com.example.car_rental_backend1.dto.request.BookingRequestDTO;
 import com.example.car_rental_backend1.dto.request.CarRequestDTO;
 import com.example.car_rental_backend1.service.BookingService;
@@ -27,6 +28,23 @@ public class BookingController {
                 new StandardResponse(201, "Create New Booking", message),
                 HttpStatus.CREATED
         );
+        return response;
+
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(
+            path = "/get-all-bookings",
+            params = {"page"}
+    )
+    public ResponseEntity<StandardResponse> getAllBookings(@RequestParam (value = "page") int page) {
+       PaginateBookingResponseDTO paginateBookingResponseDTO = bookingService.getAllBookings(page);
+
+        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "All Booking Details List With Paginate", paginateBookingResponseDTO),
+                HttpStatus.OK
+        );
+
         return response;
 
     }

@@ -2,6 +2,8 @@ package com.example.car_rental_backend1.repo;
 
 
 import com.example.car_rental_backend1.entity.CarNew;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,8 @@ public interface CarRepo extends JpaRepository<CarNew,String> {
 
     CarNew getReferenceByCarNumber(String carNumber);
 
-
     void deleteByCarNumber(String carNumber);
+
+    Page<CarNew> findAllByStatusEquals(String status, PageRequest pageRequest);
+
 }
