@@ -19,4 +19,6 @@ public interface CarService {
     String deleteCarByCarNumber(String carNumber);
 
     PaginateCarResponseDTO getAllCarsWithPaginate(int page, int size);
+
+    PaginateCarResponseDTO getCarByStatusWithPaginate(String status, int page);
 }
