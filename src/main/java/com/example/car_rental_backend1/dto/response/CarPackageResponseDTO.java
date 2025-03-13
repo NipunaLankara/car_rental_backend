@@ -1,4 +1,4 @@
-package com.example.car_rental_backend1.dto.request;
+package com.example.car_rental_backend1.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,11 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 
-public class CarPackageRequestDTO {
-
+public class CarPackageResponseDTO {
     private int id;
     private String packageDuration;
-    private int price;
     private int distanceLimitKm;
-    private int typeId;
+    private int price;
+    private int carTypeId;
 }

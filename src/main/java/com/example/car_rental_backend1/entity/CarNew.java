@@ -30,7 +30,6 @@ public class CarNew {
     @JoinColumn(name="type_id", nullable=false)
     private CarType carType;
 
-
     @OneToMany(mappedBy = "carNumber")
     private Set<Bookings> bookings;
 
