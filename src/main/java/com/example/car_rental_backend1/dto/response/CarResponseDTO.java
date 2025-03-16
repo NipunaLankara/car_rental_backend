@@ -1,6 +1,6 @@
 package com.example.car_rental_backend1.dto.response;
 
-import com.example.car_rental_backend1.entity.CarType;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,5 +15,18 @@ public class CarResponseDTO {
     private String model;
     private String status;
     private int typeId;
+    private String typeName;
 
+    public CarResponseDTO(String carNumber, String model, String status) {
+        this.carNumber = carNumber;
+        this.model = model;
+        this.status = status;
+    }
+
+    public CarResponseDTO(String carNumber, String model, String status, int typeId) {
+        this.carNumber = carNumber;
+        this.model = model;
+        this.status = status;
+        this.typeId = typeId;
+    }
 }

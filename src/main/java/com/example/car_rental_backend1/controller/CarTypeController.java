@@ -44,6 +44,20 @@ public class CarTypeController {
        );
     }
 
+    @GetMapping(
+            path = "get-car-type-by-id",
+            params = "id"
+    )
+        @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<StandardResponse> getCarTypeById (@RequestParam (value = "id") int id) {
+        CarTypeResponseDTO carTypeResponseDTO = carTypeService.getCarTypeById(id);
+
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200,"Car Type By Id",carTypeResponseDTO),
+                HttpStatus.OK
+        );
+    }
+
     @PutMapping(
             path = "/update-car-type"
     )

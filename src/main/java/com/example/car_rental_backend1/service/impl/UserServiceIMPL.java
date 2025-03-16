@@ -112,9 +112,7 @@ public class UserServiceIMPL implements UserService {
             exceptionError = "Address cannot be empty.";
         } else if (email == null || email.isEmpty()) {
             exceptionError = "Invalid email format.";
-        } else if (phoneNumber.length() != 10) {
-            exceptionError = "Phone number must be 10 digits.";
-        } else if (nic == null || nic.isEmpty()) {
+        }  else if (nic == null || nic.isEmpty()) {
             exceptionError = "Invalid NIC format.";
         } else if (password == null || password.length() < 5) {
             exceptionError = "Password must be at least 5 characters long.";
