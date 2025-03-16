@@ -68,6 +68,23 @@ public class CarController {
     }
 
     @GetMapping(
+            path = "/get-car-by-car-number",
+            params = "carNumber"
+    )
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<StandardResponse> getCarByCaNumber(@RequestParam(value = "carNumber") String carNumber) {
+        System.out.println("Car Number = " +carNumber);
+        CarResponseDTO carResponseDTO = carService.getCarByCaNumber(carNumber);
+
+
+        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Get Car By Car Number ", carResponseDTO),
+                HttpStatus.OK
+        );
+        return response;
+    }
+
+    @GetMapping(
             path = "/get-car-by-status",
             params = "status"
     )

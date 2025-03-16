@@ -62,7 +62,8 @@ public class CarServiceIMPL implements CarService {
                     car.getCarNumber(),
                     car.getModel(),
                     car.getStatus(),
-                    car.getCarType().getId()
+                    car.getCarType().getId(),
+                    car.getCarType().getTypeName()
             );
             carResponseDTOList.add(carResponseDTO);
         }
@@ -87,7 +88,8 @@ public class CarServiceIMPL implements CarService {
                             car.getCarNumber(),
                             car.getModel(),
                             car.getStatus(),
-                            car.getCarType().getId()
+                            car.getCarType().getId(),
+                            car.getCarType().getTypeName()
                     );
                     carResponseDTOList.add(carResponseDTO);
                 }
@@ -149,6 +151,26 @@ public class CarServiceIMPL implements CarService {
         } else {
             throw new NotContentException("Car List Empty");
         }
+    }
+
+    @Override
+    public CarResponseDTO getCarByCaNumber(String carNumber) {
+
+        if (carRepo.existsByCarNumber(carNumber)) {
+
+            CarNew carNew = carRepo.getReferenceByCarNumber(carNumber);
+
+            CarResponseDTO carResponseDTO = new CarResponseDTO(
+                    carNew.getCarNumber(),
+                    carNew.getModel(),
+                    carNew.getStatus()
+            );
+            return carResponseDTO;
+
+        } else {
+            throw new NotContentException("No Car Details for car number = " + carNumber);
+        }
+
     }
 
 

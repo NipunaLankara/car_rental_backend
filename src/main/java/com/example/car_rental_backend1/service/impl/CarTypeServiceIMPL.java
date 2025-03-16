@@ -88,6 +88,23 @@ public class CarTypeServiceIMPL implements CarTypeService {
         }
     }
 
+    @Override
+    public CarTypeResponseDTO getCarTypeById(int id) {
+
+        if (id>0) {
+            if (carTypeRepo.existsById(id)) {
+                CarType carType = carTypeRepo.getReferenceById(id);
+                CarTypeResponseDTO carTypeResponseDTO = modelMapper.map(carType, CarTypeResponseDTO.class);
+                return carTypeResponseDTO;
+
+            }else {
+                throw new NotContentException("Car Type Not Found This Id :"+id);
+            }
+        }  else {
+            throw new IllegalArgumentException("Car Type Id is Empty");
+        }
+    }
+
     private boolean validateDetails(CarTypeRequestDTO carTypeRequestDTO) {
         String typeName = carTypeRequestDTO.getTypeName();
         int chargePerDay = carTypeRequestDTO.getChargePerDay();

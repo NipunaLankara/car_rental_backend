@@ -14,4 +14,6 @@ public interface CarTypeService {
     String updateCarType(CarTypeRequestDTO carTypeRequestDTO);
 
     String deleteCarTypeById(int id);
+
+    CarTypeResponseDTO getCarTypeById(int id);
 }

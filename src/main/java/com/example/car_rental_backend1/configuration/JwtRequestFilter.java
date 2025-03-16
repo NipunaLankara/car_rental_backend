@@ -36,6 +36,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
+//        String requestURI = request.getRequestURI();
+//        if (requestURI.equals("/api/v1/user/authenticate") || requestURI.equals("/api/v1/user/register-new-user")
+//                || requestURI.equals("/api/v1/car_type/add-new-type")
+//                || requestURI.equals("/api/v1/car_type/get-all-car-types")
+//                || requestURI.equals("/api/v1/car_type/delete-car-type-by-id")
+//                || requestURI.equals("/api/v1/car_type/get-car-type-by-id")
+//                || requestURI.equals("/api/v1/car_type/update-car-type")
+//        ){
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+
         String userName = null;
         String jwtToken = null;
 
