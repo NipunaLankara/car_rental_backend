@@ -21,10 +21,10 @@ public class Bill {
     @Column(name = "package_price", length = 280, nullable = false)
     private double packagePrice;
 
-    @Column(name = "addtional_charge_perKm", length = 280, nullable = true)
+    @Column(name = "addtional_charge_per_km", length = 280, nullable = true)
     private double addtionalChargePerKm;
 
-    @Column(name = "addtional_charge_perDay", length = 280, nullable = true)
+    @Column(name = "addtional_charge_per_day", length = 280, nullable = true)
     private double addtionalChargePerDay;
 
     @Column(name = "deposit", length = 280, nullable = false)

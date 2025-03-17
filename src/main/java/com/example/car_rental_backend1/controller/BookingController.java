@@ -1,5 +1,6 @@
 package com.example.car_rental_backend1.controller;
 
+import com.example.car_rental_backend1.dto.paginate.PaginateBookindAndBillResponseDTO;
 import com.example.car_rental_backend1.dto.paginate.PaginateBookingResponseDTO;
 import com.example.car_rental_backend1.dto.request.BookingRequestDTO;
 import com.example.car_rental_backend1.service.BookingService;
@@ -68,6 +69,31 @@ public class BookingController {
         return response;
 
     }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(
+            path = "/get-booking-and-bill-for-booking-id", // parse the booking id
+            params = {"id","page"}
+    )
+    public ResponseEntity<StandardResponse> getBookingDetailsAndBillDetailsByBookingId(
+            @RequestParam (value = "id") int id,
+            @RequestParam (value = "page") int page
+
+    ) {
+        PaginateBookindAndBillResponseDTO paginateBookindAndBillResponseDTO = bookingService.getBookingDetailsAndBillDetailsByBookingId(id,page);
+
+        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "All Booking Details And Bill Details List  With Paginate", paginateBookindAndBillResponseDTO),
+                HttpStatus.OK
+        );
+
+        return response;
+
+    }
+
+
+
 
 
 }

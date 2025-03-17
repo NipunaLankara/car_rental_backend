@@ -1,7 +1,10 @@
 package com.example.car_rental_backend1.service.impl;
 
+import com.example.car_rental_backend1.dto.paginate.PaginateBookindAndBillResponseDTO;
 import com.example.car_rental_backend1.dto.paginate.PaginateBookingResponseDTO;
+import com.example.car_rental_backend1.dto.queryinterfaces.BookingAndBillDetailsInterface;
 import com.example.car_rental_backend1.dto.request.BookingRequestDTO;
+import com.example.car_rental_backend1.dto.response.BookingAndBillResponseDTO;
 import com.example.car_rental_backend1.dto.response.BookingResponseDTO;
 import com.example.car_rental_backend1.entity.*;
 import com.example.car_rental_backend1.exception.NotContentException;
@@ -149,5 +152,23 @@ public class BookingServiceIMPL implements BookingService {
             throw new NotContentException("No Booking Details ");
         }
     }
+
+    @Override
+    public PaginateBookindAndBillResponseDTO getBookingDetailsAndBillDetailsByBookingId(int id, int page) {
+        Page<BookingAndBillDetailsInterface> bookingAndBillPage =
+                bookingRepo.getBookingDetailsAndBillDetailsByBookingId(id, PageRequest.of(page, 5));
+
+        System.out.println("Bookign ="+bookingAndBillPage);
+
+        if (bookingAndBillPage.hasContent()) {
+            long count = bookingAndBillPage.getTotalElements();
+            List<BookingAndBillDetailsInterface> bookingAndBillList = bookingAndBillPage.getContent();
+
+            return new PaginateBookindAndBillResponseDTO(bookingAndBillList, count);
+        } else {
+            throw new NotContentException("No Booking Details Found for the given Booking ID: " + id);
+        }
+    }
+
 
 }

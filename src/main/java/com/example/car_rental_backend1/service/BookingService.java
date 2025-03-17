@@ -1,5 +1,6 @@
 package com.example.car_rental_backend1.service;
 
+import com.example.car_rental_backend1.dto.paginate.PaginateBookindAndBillResponseDTO;
 import com.example.car_rental_backend1.dto.paginate.PaginateBookingResponseDTO;
 import com.example.car_rental_backend1.dto.request.BookingRequestDTO;
 import com.example.car_rental_backend1.dto.request.CarRequestDTO;
@@ -10,4 +11,6 @@ public interface BookingService {
     PaginateBookingResponseDTO getAllBookings(int page);
 
     PaginateBookingResponseDTO getAllBookingForUser(int id, int page);
+
+    PaginateBookindAndBillResponseDTO getBookingDetailsAndBillDetailsByBookingId(int id, int page);
 }
