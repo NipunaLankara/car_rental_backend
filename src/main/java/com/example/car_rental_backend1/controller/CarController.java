@@ -119,7 +119,26 @@ public class CarController {
 
     }
 
+    @GetMapping(
+            path = "/get-car-by-car-type-and-status-paginate",
+            params = {"typeId","status","page"}
+    )
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<StandardResponse> getCarByCarTypeAndStatusWithPaginate(
+            @RequestParam(value = "typeId") int typeId,
+            @RequestParam(value = "status") String status,
+            @RequestParam(value = "page") int page
+    ) {
 
+        PaginateCarResponseDTO paginateCarResponseDTO =  carService.getCarByCarTypeAndStatusWithPaginate(typeId,status,page);
+
+        ResponseEntity<StandardResponse> response = new ResponseEntity <StandardResponse>(
+                new StandardResponse(200,"Get Car List By Car Type and Status With Paginate",paginateCarResponseDTO),
+                HttpStatus.OK
+        );
+        return response;
+
+    }
 
 
 
