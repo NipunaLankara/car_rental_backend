@@ -23,4 +23,6 @@ public interface CarService {
     PaginateCarResponseDTO getCarByStatusWithPaginate(String status, int page);
 
     CarResponseDTO getCarByCaNumber(String carNumber);
+
+    PaginateCarResponseDTO getCarByCarTypeAndStatusWithPaginate(int typeId, String status, int page);
 }

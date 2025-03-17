@@ -44,6 +44,10 @@ public class BookingServiceIMPL implements BookingService {
             CarNew car = carRepo.findById(bookingRequestDTO.getCarNumber()).orElseThrow(() -> new RuntimeException("Car not found"));
             CarPackage carPackage = carPackRepo.findById(bookingRequestDTO.getCarPackageId()).orElseThrow(() -> new RuntimeException("Package not found"));
 
+            // Update car status to "Booked"
+            car.setStatus("Booked");
+            carRepo.save(car); // Save updated car status
+
             // Create Booking entity
             Bookings booking = new Bookings();
             booking.setBookingDate(bookingRequestDTO.getBookingDate());
@@ -109,4 +113,41 @@ public class BookingServiceIMPL implements BookingService {
             throw new NotContentException("Booking List Empty");
         }
     }
+
+    @Override
+    public PaginateBookingResponseDTO getAllBookingForUser(int id, int page) {
+
+        if (bookingRepo.existsByUser_UserId(id)) {
+            Page<Bookings> bookingsPage = bookingRepo.findAllByUser_UserId(id, PageRequest.of(page, 10));
+
+
+            if (bookingsPage.hasContent()) {
+              long count = bookingRepo.count();
+              List<BookingResponseDTO> bookingResponseDTOList = new ArrayList<BookingResponseDTO>();
+
+              for (Bookings bookings1 :bookingsPage.getContent()) {
+                  BookingResponseDTO bookingResponseDTO = new BookingResponseDTO(
+                          bookings1.getId(),
+                          bookings1.getBookingDate(),
+                          bookings1.getStartDate(),
+                          bookings1.getReturnDate(),
+                          bookings1.getStartMillage(),
+                          bookings1.getEndMillage(),
+                          bookings1.getCarNumber().getCarNumber(),
+                          bookings1.getCarPackage().getPackageDuration()
+                  );
+
+                  bookingResponseDTOList.add(bookingResponseDTO);
+              }
+              return new PaginateBookingResponseDTO(bookingResponseDTOList,count);
+
+          } else {
+              throw new NotContentException("No Booking Details ");
+          }
+
+        } else {
+            throw new NotContentException("No Booking Details ");
+        }
+    }
+
 }
