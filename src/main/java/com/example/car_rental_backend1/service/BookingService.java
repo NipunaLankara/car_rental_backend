@@ -8,4 +8,6 @@ public interface BookingService {
     String addNewBooking(BookingRequestDTO bookingRequestDTO );
 
     PaginateBookingResponseDTO getAllBookings(int page);
+
+    PaginateBookingResponseDTO getAllBookingForUser(int id, int page);
 }

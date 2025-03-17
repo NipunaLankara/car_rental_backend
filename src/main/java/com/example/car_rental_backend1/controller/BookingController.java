@@ -2,7 +2,6 @@ package com.example.car_rental_backend1.controller;
 
 import com.example.car_rental_backend1.dto.paginate.PaginateBookingResponseDTO;
 import com.example.car_rental_backend1.dto.request.BookingRequestDTO;
-import com.example.car_rental_backend1.dto.request.CarRequestDTO;
 import com.example.car_rental_backend1.service.BookingService;
 import com.example.car_rental_backend1.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +47,27 @@ public class BookingController {
         return response;
 
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(
+            path = "/get-all-booking-for-user",
+            params = {"id","page"}
+    )
+    public ResponseEntity<StandardResponse> getAllBookingForUser(
+            @RequestParam (value = "id") int id,
+            @RequestParam (value = "page") int page
+
+    ) {
+        PaginateBookingResponseDTO paginateBookingResponseDTO = bookingService.getAllBookingForUser(id,page);
+
+        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "All Booking Details List For Custoer With Paginate", paginateBookingResponseDTO),
+                HttpStatus.OK
+        );
+
+        return response;
+
+    }
+
+
 }
